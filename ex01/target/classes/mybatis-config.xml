@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- 자바는 null안됨, db는 null값 존재 : 이 칭구들을 어떻게 처리해줄지 -->
+<!-- mapUnderscoreToCamelCase : 디비에서 타입코드로 지정된 경우, 자바에서 어떻게 처리할지 알려줄건지 .. -->
+
+<!-- configuration : 안에 세팅해줄 칭구들 -->
+<configuration>
+	<settings>
+	<!-- 컬럼명을 카멜표기법으로 바꿈 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- 서버에서 DB로 null값을 보냈을 떄 : 디비에서 사용하는 null값 처리해줄지, 문자열string로 해줄지-->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<!-- 별칭관리 -->
+	<typeAliases>
+		<!--  <typeAlias type="com.yedam.java.emp.service.EmpVO" alias="empInfo"/> -->
+		<package name="com.yedam.java.emp.service"/>
+		<!-- vo에서 하이폰 뺴고 되는지 테스트해보기 -->
+	</typeAliases>
+	
+	<!-- int,string,date : date가 문제됨 -->
+	<!-- java.sql.Timestamp를 java.util.Date형으로 변환 -->
+	<typeHandlers>
+		<typeHandler javaType="java.sql.Date" handler="org.apache.ibatis.type.DateTypeHandler" />
+	</typeHandlers>
+</configuration>

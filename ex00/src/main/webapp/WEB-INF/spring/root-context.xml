@@ -11,9 +11,9 @@
    <!-- DB(HicariCP) -->
    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
       <property name="driverClassName"
-         value="oracle.jdbc.driver.OracleDriver" />
+         value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
       <property name="jdbcUrl"
-         value="jdbc:oracle:thin:@127.0.0.1:1521:xe" />
+         value="jdbc:log4jdbc:oracle:thin:@127.0.0.1:1521:xe" />
       <property name="username" value="hr" />
       <property name="password" value="hr" />
    </bean>
@@ -27,6 +27,9 @@
    <!-- Mybatis sqlSessionFactory, 세션(일시적으로 생성, 데이터가 돌아오기 전까지 유지) <-> (통로)-->
    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
       <property name="dataSource" ref="dataSource" />
+      <!-- 마이바티스 셋팅 : 여기설정 안하고 구분하고 싶을때 경로만 넘겨줌 -->
+      <!-- src/main/resources = configLocation -->
+      <property name="configLocation" value="classpath:mybatis-config.xml"></property>
    </bean>
 
    <!-- mapper(인터페이스 + xml) scan -->

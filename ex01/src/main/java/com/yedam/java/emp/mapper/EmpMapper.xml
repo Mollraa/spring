@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace : 내가지금 연결하고자하는 인터페이스 풀네임적어줌 -->
+<!-- <select id="메서드이름" parameterType="파라미터(매개변수 - 없으면 생략)" resultType="리턴되는 
+	정보"> -> 있어야 할 기본 타입들 -->
+<mapper namespace="com.yedam.java.emp.mapper.EmpMapper">
+
+	<!-- resultMap : 기존의 VO로 처리 어렵거나, 마이바티스로 해야할 때 | 조인 하거나, 새로운 별칭으로 데이터 반환 
+		될 때. : 기준이 되는 VO만들고 컬럼, 프로퍼티 지정해줌, 다양한 방법 많음 -->
+	<!-- <resultMap type="EmpVO" id="empInfo"> -->
+	<!-- <id column="employee_id" property="employeeId" /> -->
+	<!-- <result column="last_name" property="lastName" /> -->
+	<!-- </resultMap> -->
+
+
+
+
+
+	<!-- 전체조회 - select태그 : 실제로 값을 담는 VO넘겨줌. | 지금 : 리스트타입의 결과에 맞춰서 알아서 리스트로 만들어줌 
+		-> 그 다음 마이바티스가 알아서 만들어줌 -->
+	<!-- select는 하위요소, sql문에 한정 되지 않음 : insert, update에 사용가능 -->
+	<!-- mybatis : sql문 그대로 사용 ;빼고 적으면 됨, 컴파일은 안해줌(문법적으로 맞는지 틀린지) -->
+	<select id="getEmpList" resultType="EmpVO">
+		SELECT * FROM employees
+	</select>
+
+	<!-- 단건조회 -->
+	<!-- #{employeeId} : empId -> getEmployeeId -->
+	<!-- resultType="EmpVO"(자바가 가지는 클래스 가져옴) <-> resultMap=""(마이바티스 안에서 새로운 
+		타입 가져옴) : 동시사용 못함 -->
+	<select id="getEmp" parameterType="EmpVO" resultType="EmpVO">
+		SELECT *
+		FROM employees
+		WHERE employee_id #{employeeId}
+	</select>
+
+	<!-- 등록 -->
+	<!-- <selectKey keyProperty="selectkey안에서 실행되는 결과에 붙일 이름(어디에 담을건지~ 명시해줘야 
+		알징ㅎ)" 담아서 VALUES (#{employeeId})여기로 전달. resultType="반환되는 타입" order="언제시작할지"> -->
+	<insert id="insertEmp" parameterType="EmpVO">
+		<selectKey keyProperty="employeeId" resultType="Integer"
+			order="BEFORE">
+			SELECT MAX(employee_id)+1 FROM employees
+		</selectKey>
+		INSERT INTO employees
+		(employee_id,
+		first_name,
+		last_name,
+		email,
+		hire_date,
+		job_id,
+		salary)
+		VALUES (#{employeeId},
+		#{firstName},
+		#{lastName},
+		#{email},
+		sysdate,
+		#{jobId},
+		#{salary})
+	</insert>
+
+	<!-- 수정 -->
+	<!-- #{employeeId} : 필드값 없으면 변수명 -->
+	<update id="updateEmpSalary" parameterType="Integer">
+		UPDATE employees
+		SET
+		salary = salary * 1.1
+		WHERE employee_id = #{eId}
+	</update>
+	
+	
+	<!-- 수정2 : 사원정보를 넘겨받아서 이름과, 성, 이메일을 수정할 수 있는 메소드 -->
+	<update id="updateEmpInfo" parameterType="EmpVO">
+		<!-- 이렇게 하면 수정 안하는 값도 바뀜 UPDATE employees SET first_name = #{firstName}, 
+			last_name = #{lastName}, email = #{email} WHERE employee_id = #{employeeId} -->
+
+		<!-- 기존의 컬럼들이 동적으로 움직여 줘야함, 만족하지 않는 조건if태그는 알아서 사라짐 -->
+		<!-- 필드, 즉 get으로 접근 -->
+		<!-- 기존 sql은 마지막 ,는 들어가면 오류나고,  set+if를 쓰더라도 오류없이 값이 들어가게된다면 ,로 들어가게되서 db에서 값이 맞지 않게 되니까 set+if는 같이 쓰쟈! -->
+		UPDATE employees
+		<set>
+			<if test="firstName != null and !firstName.equals('')">
+				first_name = #{firstName},
+			</if>
+			<if test="lastName != null and !lastName.equals('')">
+				last_name = #{lastName},
+			</if>
+			<if test="email != null and !email.equals('')">
+				email = #{email},
+			</if>
+		</set>
+		WHERE employee_id = #{employeeId}
+
+	</update>
+
+	<!-- 삭제 -->
+	<delete id="deleteEmpInfo" parameterType="Integer">
+		DELETE FROM employees
+		WHERE employee_id = #{employeeID}
+	</delete>
+</mapper>
