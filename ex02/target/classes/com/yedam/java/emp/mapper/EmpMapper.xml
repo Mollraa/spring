@@ -75,7 +75,7 @@
 		#{email},
 		<!-- 컬럼 자체 디폴드 값이 있는 경우 : 컬럼값생략 후(if문) ->  -->
 		<if test="hireDate != null">
-		#{hire_date},
+		#{hireDate},
 		</if>
 		#{jobId},
 		#{salary})

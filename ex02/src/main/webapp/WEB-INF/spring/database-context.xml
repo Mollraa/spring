@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 반드시 bean을 추가 해줘야 라이브러리에 추가한 DB, Mybits 기능들을 쓸 수 있음! -->
+	<!-- bean 중복 안되게 잘 확인하기 -->
+
+	<!-- DB(HicariCP) -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl"
+			value="jdbc:log4jdbc:oracle:thin:@127.0.0.1:1521:xe" />
+		<property name="username" value="hr" />
+		<property name="password" value="hr" />
+	</bean>
+
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<!-- Mybais -->
+	<!-- Mybatis sqlSessionFactory, 세션(일시적으로 생성, 데이터가 돌아오기 전까지 유지) <-> (통로) -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 마이바티스 셋팅 : 여기설정 안하고 구분하고 싶을때 경로만 넘겨줌 -->
+		<!-- src/main/resources = configLocation -->
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml"></property>
+	</bean>
+
+	<!-- mapper(인터페이스 + xml) scan -->
+	<!--  base-package="com.yedam.java"가 root라서 범위 좁혀줌-->
+	<mybatis-spring:scan base-package="com.yedam.java.**.mapper" />
+</beans>

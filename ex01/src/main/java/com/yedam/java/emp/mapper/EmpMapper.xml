@@ -34,7 +34,20 @@
 	<select id="getEmp" parameterType="EmpVO" resultType="EmpVO">
 		SELECT *
 		FROM employees
-		WHERE employee_id #{employeeId}
+		<!--  WHERE employee_id #{employeeId} -->
+		
+		<!-- set / where / if(단독사용가능) -->
+		<!-- set = where절/ 그냥 where절을 다이나믹 으로 바꿔서 작성 -->
+		<where>
+			<if test="employeeId != 0">
+			employee_id = #{employeeId}
+			</if>
+			<if test="firstName != null and !firstName.equals('')">
+			AND first_name = #{firstName}
+			</if>
+			
+			<!-- OR,AND first_name = #{firstName}  -->
+		</where>
 	</select>
 
 	<!-- 등록 -->
@@ -50,14 +63,20 @@
 		first_name,
 		last_name,
 		email,
+		<!-- 컬럼 자체 디폴드 값이 있는 경우 : 컬럼값생략 후(if) -> 밸류에도 적용 , 마지막 컬럼에는 사용금지   -->
+		<if test="hireDate != null">
 		hire_date,
+		</if>
 		job_id,
 		salary)
 		VALUES (#{employeeId},
 		#{firstName},
 		#{lastName},
 		#{email},
-		sysdate,
+		<!-- 컬럼 자체 디폴드 값이 있는 경우 : 컬럼값생략 후(if문) ->  -->
+		<if test="hireDate != null">
+		#{hire_date},
+		</if>
 		#{jobId},
 		#{salary})
 	</insert>
@@ -70,8 +89,8 @@
 		salary = salary * 1.1
 		WHERE employee_id = #{eId}
 	</update>
-	
-	
+
+
 	<!-- 수정2 : 사원정보를 넘겨받아서 이름과, 성, 이메일을 수정할 수 있는 메소드 -->
 	<update id="updateEmpInfo" parameterType="EmpVO">
 		<!-- 이렇게 하면 수정 안하는 값도 바뀜 UPDATE employees SET first_name = #{firstName}, 
@@ -79,8 +98,12 @@
 
 		<!-- 기존의 컬럼들이 동적으로 움직여 줘야함, 만족하지 않는 조건if태그는 알아서 사라짐 -->
 		<!-- 필드, 즉 get으로 접근 -->
-		<!-- 기존 sql은 마지막 ,는 들어가면 오류나고,  set+if를 쓰더라도 오류없이 값이 들어가게된다면 ,로 들어가게되서 db에서 값이 맞지 않게 되니까 set+if는 같이 쓰쟈! -->
+		<!-- 기존 sql은 마지막 ,는 들어가면 오류나고, set+if를 쓰더라도 오류없이 값이 들어가게된다면 ,로 들어가게되서 db에서 
+			값이 맞지 않게 되니까 set+if는 같이 쓰쟈! -->
 		UPDATE employees
+		<!-- set 태그없이 그냥도 사용가능 -->
+
+		<!-- set태그 걸어주는 이유? set절에 -->
 		<set>
 			<if test="firstName != null and !firstName.equals('')">
 				first_name = #{firstName},
@@ -93,6 +116,8 @@
 			</if>
 		</set>
 		WHERE employee_id = #{employeeId}
+
+		<if test=""></if>
 
 	</update>
 
