@@ -121,7 +121,32 @@ table, tr, th, td {
 		});
 		 */
 	</script>
-
+	<script>
+		let message = '${msg}';
+		if(message != null && message != ''){
+			alert(message);
+		}
+		
+		$('#dataList td').click(function(){
+			let empId = $(this).closest().attr('name');
+			$('#input > input').val(empId);
+			$('#input').prop('action', 'info')
+					   .prop('method', 'get')
+					   .submit();
+			$.ajax({
+				url : 'delete/' + empId
+				//date필드를 쓰면 : delete?employeeId=207 이런식으로 되서 포스트던 밸류던 묶이게됨, 쓰지마
+				success : function(data){
+					console.log(data);
+				},
+				error: function(reject){
+					console.log(reject);
+				}
+			})
+		});
+		
+		<!--false값을 주거나, stop.prop -->
+		return false;
 
 
 

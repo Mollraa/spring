@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- xml: 기본 순차적으로 돌아감 -->
+	<!-- datasource connection pool -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl"
+			value="jdbc:log4jdbc:oracle:thin:@127.0.0.1:1521:xe" />
+		<property name="username" value="hr" />
+		<property name="password" value="hr" />
+	</bean>
+
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<!-- mybatis SqlSessionFactory -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<!-- value="classpath:mybatis-config.xml" -->
+		<!-- <property name="mapperLocations" value="" /> 케바케.. --> 
+	</bean>
+
+	<!-- mapper scan -->
+	<!-- **.mapper : 관습적으로 한다는 전제 -->
+	<mybatis-spring:scan
+		base-package="com.yedam.java.**.mapper" />
+
+
+</beans>
