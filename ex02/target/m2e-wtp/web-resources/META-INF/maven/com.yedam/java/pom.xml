@@ -86,7 +86,7 @@
 			</exclusions>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<!-- log4j2 라이브러리 추가 -> 후 파일추가 -> db설정 변경 -->
 		<!-- https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1 -->
 		<dependency>
@@ -199,7 +199,14 @@
 
 
 
-
+		<!-- AspectJ Weaver -->
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.9.1</version>
+			<scope>runtime</scope>
+		</dependency>
 
 
 
