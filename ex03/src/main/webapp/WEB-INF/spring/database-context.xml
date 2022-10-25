@@ -31,10 +31,13 @@
 		base-package="com.yedam.java.**.mapper" />
 
 	<!-- transcation setting -->
-	<bean id="TransactionManager"
+	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 
 	<tx:annotation-driven />
+	<!-- tx:annotation-driven = 난 transcation매니저 실제로 동작해주지 -->
+	<!-- servlet-con~에 : <context:component-scan base-package="com.yedam.java" /> 이 친구랑 같은 역할 설정에서 백업해줌 -->
+	<!-- xml에 모든 내용을 알필욘 없지만 오류 나면, 뭐가 안되서 인지 정보는 알아야함 -->
 </beans>
