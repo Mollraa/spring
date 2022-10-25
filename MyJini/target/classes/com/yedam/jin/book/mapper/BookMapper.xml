@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yedam.jin.book.mapper.BookMapper">
+	<!-- 메서드에 있는 인터페이스이름 = id -->
+	<!-- resultType="BookVO" 별칭 -->
+	<!-- resultType="com.yedam.jin.book.service.BookVO" 정석방법 -->
+	<select id="getBookList" resultType="BookVO">
+		SELECT * FROM book_tbl_06 ORDER BY book_no 
+	</select>
+</mapper>

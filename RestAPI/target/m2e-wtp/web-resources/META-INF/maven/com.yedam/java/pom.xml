@@ -152,7 +152,6 @@
 		</dependency>
 
 		<!-- DB -->
-
 		<!-- ojdbc8 -->
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
@@ -189,20 +188,27 @@
 		</dependency>
 
 		<!-- tiles setting -->
-		
 		<!-- tiles-core -->
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-core</artifactId>
 			<version>${org.apache.tiles-version}</version>
 		</dependency>
-
 		<!-- tiles-extras -->
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-extras</artifactId>
 			<version>${org.apache.tiles-version}</version>
 		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
