@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="mainTemplate"
+		template="/WEB-INF/views/tiles/layout.jsp">
+		<!-- tiles:insertAttribute해준 애들 put-attribute로 연결할 곳 지정 -->
+		<put-attribute name="header"
+			value="/WEB-INF/views/tiles/header.jsp"></put-attribute>
+		<put-attribute name="footer"
+			value="/WEB-INF/views/tiles/footer.jsp"></put-attribute>
+	</definition>
+
+	<!-- <definition name="중요함"> name : 컨트롤러에서 반환되는 이름 -->
+	<!-- 받을 때 */* -> 들어 갈 때 *{1}/*{2} -->
+	<definition name="*/*" extends="mainTemplate">
+		<put-attribute name="main"
+			value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+	
+	<!-- home.jsp는 두번째 작동, tiles적용하려면 아래 처럼 설정 해주기 -->
+	<definition name="home" extends="mainTemplate">
+		<put-attribute name="main"
+			value="/WEB-INF/views/home.jsp"></put-attribute>
+	</definition>
+	
+	<!-- 관리자 -->
+	<definition name="admin/*/*" extends="mainTemplate">
+	<put-attribute name="main"
+			value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+</tiles-definitions>
